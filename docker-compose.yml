@@ -104,6 +104,29 @@ services:
       - elasticsearch
     restart: unless-stopped
 
+  apm-server:
+    build:
+      context: apm-server/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    depends_on:
+      - elasticsearch
+      - kibana
+    ports:
+      - "8200:8200"
+    environment:
+      - apm-server.host=0.0.0.0:8200
+      - apm-server.secret_token=${APM_SECRET_TOKEN}
+      - output.elasticsearch.hosts=["http://elasticsearch:9200"]
+      - output.elasticsearch.username=elastic
+      - output.elasticsearch.password=changeme
+      - setup.kibana.host=kibana:5601
+      - apm-server.kibana.enabled=true
+      - apm-server.kibana.host=kibana:5601
+    networks:
+      - elk
+    restart: unless-stopped
+
 networks:
   elk:
     driver: bridge
