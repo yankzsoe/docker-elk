@@ -1,14 +1,24 @@
-server.name: apm-server
-server.host: 0.0.0.0
+apm-server:
+  host: "0.0.0.0:8200"
 
 output.elasticsearch:
-  hosts: [ http://elasticsearch:9200 ]
-  protocol: "http"
-  username: "elastic"
-  password: "${ELASTIC_PASSWORD}"
+  hosts: ["http://elasticsearch:9200"]
+  username: "apm_server"
+  password: "${APM_SYSTEM_PASSWORD}"  # <- sinkron dengan .env dan entrypoint.sh
 
 setup.kibana:
   host: "http://kibana:5601"
   username: "kibana_system"
   password: "${KIBANA_SYSTEM_PASSWORD}"
 
+monitoring.enabled: true
+monitoring.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  username: "beats_system"
+  password: "${BEATS_SYSTEM_PASSWORD}"
+
+# Optional: Token auth untuk aplikasi agen (jika ingin gunakan APM Secret Token)
+# Uncomment jika ingin mengaktifkan
+# apm-server.auth.secret_token: "${APM_SECRET_TOKEN}"
+
+logging.to_stderr: true

@@ -35,6 +35,8 @@ services:
       HEARTBEAT_INTERNAL_PASSWORD: ${HEARTBEAT_INTERNAL_PASSWORD:-}
       MONITORING_INTERNAL_PASSWORD: ${MONITORING_INTERNAL_PASSWORD:-}
       BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
+      APM_SYSTEM_PASSWORD: ${APM_SYSTEM_PASSWORD:-}
+      APM_SECRET_TOKEN: ${APM_SECRET_TOKEN:-}
     networks:
       - elk
     depends_on:
@@ -109,20 +111,16 @@ services:
       context: apm-server/
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./apm-server/config/apm-server.yml:/usr/share/apm-server/config/apm-server.yml:ro,Z
     depends_on:
       - elasticsearch
       - kibana
     ports:
       - "8200:8200"
     environment:
-      - apm-server.host=0.0.0.0:8200
-      - apm-server.secret_token=${APM_SECRET_TOKEN}
-      - output.elasticsearch.hosts=["http://elasticsearch:9200"]
-      - output.elasticsearch.username=elastic
-      - output.elasticsearch.password=changeme
-      - setup.kibana.host=kibana:5601
-      - apm-server.kibana.enabled=true
-      - apm-server.kibana.host=kibana:5601
+      APM_SECRET_TOKEN: ${APM_SECRET_TOKEN}
+      APM_SYSTEM_PASSWORD: ${APM_SYSTEM_PASSWORD}
     networks:
       - elk
     restart: unless-stopped

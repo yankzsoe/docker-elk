@@ -18,6 +18,7 @@ users_passwords=(
 	[heartbeat_internal]="${HEARTBEAT_INTERNAL_PASSWORD:-}"
 	[monitoring_internal]="${MONITORING_INTERNAL_PASSWORD:-}"
 	[beats_system]="${BEATS_SYSTEM_PASSWORD=:-}"
+	[apm_server]="${APM_SYSTEM_PASSWORD:-}"
 )
 
 declare -A users_roles
@@ -27,6 +28,7 @@ users_roles=(
 	[filebeat_internal]='filebeat_writer'
 	[heartbeat_internal]='heartbeat_writer'
 	[monitoring_internal]='remote_monitoring_collector'
+	[apm_server]='apm_system'
 )
 
 # --------------------------------------------------------
