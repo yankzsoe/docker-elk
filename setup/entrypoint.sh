@@ -28,7 +28,7 @@ users_roles=(
 	[filebeat_internal]='filebeat_writer'
 	[heartbeat_internal]='heartbeat_writer'
 	[monitoring_internal]='remote_monitoring_collector'
-	[apm_server]='apm_system'
+	[apm_server]='superuser'
 )
 
 # --------------------------------------------------------
